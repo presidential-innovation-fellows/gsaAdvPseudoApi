@@ -1,0 +1,32 @@
+{
+  "name" : "Advantage API",
+  "short_name" : "pp4GSAAdvantage",
+  "version" : "0.2.1",
+  "description" : "Provide a functional API for searching GSA Advantage",
+  "background" : { "page": "advApiBg.html" },
+  "icons" : {
+    "48": "icon48.png"          
+    },
+  "permissions" : [
+	      "tabs",
+	      "https://www.gsaadvantage.gov/*" ],
+  "page_action": {
+    "default_icon": {                  
+        "19": "icon19.png",          
+        "38": "icon38.png"
+        },
+    "default_title": "Search on GSA Advantage",
+    "default_popup": "popup.html"
+    },
+  "content_scripts": [
+	   {
+       "matches": ["https://gsa.gov/*"],
+	   "js": [ "jquery-1.10.2.js", "advApiBg.js"]
+	   }
+  ],
+  "minimum_chrome_version" : "6.0.0.0",
+  "manifest_version": 2,
+  "web_accessible_resources": [
+      "https://www.gsaadvantage.gov/*"
+  ]
+}

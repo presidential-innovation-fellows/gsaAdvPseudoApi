@@ -1,0 +1,936 @@
+ 
+<!--  test -->
+
+<!DOCTYPE html>
+<html lang="en-us">    
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		 
+			
+			
+
+				
+      	   	      			   
+				
+				
+		
+		<link rel="stylesheet" href="/resources/css/gsa-theme-styles.css" type="text/css" />	
+		<link rel="stylesheet" href="/resources/css/gsa-rfb-styles.css" type="text/css" />
+		<link rel="stylesheet" href="/resources/css/directives.css" type="text/css" />
+		
+		
+		<!-- Theme specific css files:  -->
+		
+		<!-- End: Theme specific css files -->
+		
+		<!-- Layout specific css files -->
+		
+		<!-- End: Layout specific css files -->
+		
+		
+		 
+<style>
+	
+	.modal-overlay
+	{
+		position:fixed;
+		top:0;
+		right:0;
+		bottom:0;
+		left:0;
+		height:100%;
+		width:100%;
+		margin:0;
+		padding:0;	
+		background: #000000;
+		opacity:.75; 
+		filter: alpha(opacity=75);
+		-moz-opacity: 0.75;
+		z-index:101;
+	}
+	modal-view-overlay
+	{
+		position:fixed;
+		top:0;
+		right:0;
+		bottom:0;
+		left:0;
+		height:100%;
+		width:100%;
+		margin:0;
+		padding:0;	
+		background: #000000;
+		opacity:.75; 
+		filter: alpha(opacity=75);
+		-moz-opacity: 0.75;
+		z-index:101;
+		
+	}
+	
+	
+	.modal-window
+	{
+		position:fixed;
+		top:50%;
+		left:50%;
+		margin:0;
+		padding:0;
+		z-index:99999;
+		background: #C3C3C3;
+			
+	}
+	.modal-view-window
+	{
+		position:fixed;
+		top:50%;
+		left:50%;
+		margin:0;
+		padding:0;
+		z-index:99999;
+		background: #C3C3C3;
+		font-size:.9em;
+}
+			
+	}
+	.close-window
+	{
+		position:absolute;
+		width:100px;
+		height:80px;
+		right:8px;
+		top:8px;
+		text-indent:-99999px;
+		overflow:auto;
+		cursor:pointer;
+		opacity:.5;
+		filter: alpha(opacity=50);
+		-moz-opacity: 0.5;
+	}
+	.close-window:hover
+	{
+		opacity:.99;
+		filter: alpha(opacity=99);
+		-moz-opacity: 0.99;
+	}
+
+
+#wrapper1{
+	color:#000000;
+	font-family:tahoma;
+	font-size:14px;
+	margin:0 auto;	
+}
+#wrapper1 a{
+	cursor:pointer;
+	font-size:15px;
+	font-weight:bold;
+	text-decoration:underline;
+}
+.box {
+    background-color: #ffffff;
+    color: #888888;
+    height: 205px;
+    left: 100%;
+    padding: 20px;
+    position: fixed;
+    right: 30%;
+    top: 25%;
+    width: 555px;
+    z-index: 208;
+	border:5px solid #888888;
+	border-radius:10px;
+	-moz-border-radius:10px;
+}
+.overlay {
+  //  background: #000000;  
+    bottom: 0;
+    left: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 100;
+	opacity:0.5;
+	filter: alpha(opacity=75);
+	-moz-opacity: 0.75;
+}
+
+a.boxclose {
+    background: url("/resources/images/cancel.png") repeat scroll left top transparent;
+    cursor: pointer;
+    float: right;
+    height: 26px;
+    left: 32px;
+    position: relative;
+    top: -33px;
+    width: 26px;
+}
+</style> 
+		 
+		 
+		<script src="/resources/js/pulldown.js"></script>
+		<script language="javascript" src="/resources/js/datetimepicker.js"> </script>		 		
+		<SCRIPT type="text/javascript" SRC="/resources/js/jquery.min.js"></SCRIPT>
+		 <script type="text/javascript" src="/resources/js/plugins.js"></script>		  		
+		<script type="text/javascript" src="/resources/js/helper.js"></script>
+		
+		
+		
+		
+		<SCRIPT type="text/javascript" SRC="/resources/js/modal-window.js"></SCRIPT>				
+		
+		<!-- Theme specific script files -->
+		
+		<!-- End: Theme specific script files -->
+
+		<!-- Layout specific script files -->
+		
+		<!-- End: Layout specific script files -->
+		<!-- 			
+	    <SCRIPT LANGUAGE="JavaScript" SRC="/resources/js/c_config.js"> </SCRIPT>
+		<SCRIPT LANGUAGE="JavaScript" SRC="/resources/js/AC_RunActiveContent.js"> </SCRIPT>
+		 -->
+				
+		<SCRIPT type="text/javascript" SRC="/resources/js/jquery-bgiframe.js"></SCRIPT>		
+		<SCRIPT LANGUAGE="JavaScript" SRC="/resources/js/jquery.hoverIntent.minified.js"> </SCRIPT>
+		<SCRIPT LANGUAGE="JavaScript" SRC="/resources/js/swfobject.js"> </SCRIPT>
+		<SCRIPT LANGUAGE="JavaScript" SRC="/resources/js/homeflashmovie.js"> </SCRIPT>
+		
+		<script type="text/javascript" src="/resources/js/jquery.cycle.all.latest.js"></script>
+		<script type="text/javascript" src="/resources/js/emergencyResponse.js"></script>
+		<!-- <script type="text/javascript" src="/resources/js/jquery-latest.js"></script>--> 
+		<script type="text/javascript" src="/resources/js/jquery.tablesorter.js"></script> 
+		
+		
+	
+		<script type="text/javascript">
+	    	var uri = '/portal';
+
+	    	function getChunk(infoId, divId) {
+		    	var url =  uri + "/chunk/" + infoId;
+		    	setAjaxBlock(url, divId);
+	    	}
+	    	function getRFBChunk(infoId, divId) {
+		    	var url =  uri + "/rfbchunk/" + infoId;
+	    		document.getElementById(divId).innerHTML='<img src="/resources/images/loading.gif" border="0"/>';
+		    	$.ajax({
+		    		   type: "GET",
+		    		   url: url,
+		    		   success: function(msg){
+		    			   document.getElementById(divId).innerHTML= msg;
+		    			   $('#rfb').slideShow();
+		    		   }
+		    	});
+	    	}
+	    	
+	    	function chatterAjaxCallBack(url, divId) {
+	    		document.getElementById(divId).innerHTML='<img src="/resources/images/loading.gif" border="0"/>';
+				$.ajax({
+					type: "GET",
+					url: url,
+					success: function(msg){
+						document.getElementById(divId).innerHTML= msg;
+						$(function () {
+							$('.chatterFeed .post > a').click(function() {
+								$(this).siblings('div').slideDown();
+								$(this).html($(this).html().replace('Show',''));
+								$(this).addClass('open');
+							});
+							/*
+							$('.chatterFeed span.text p').truncate({
+								length: 120,
+								moreText: '[show more]',
+								lessText: '[show less]',
+								ellipsisText: "..."
+							});
+							*/
+							//Added as per connor's suggestion on 09202012
+							$('.chatterFeed span.text p').truncate();
+						});
+					}
+				});
+			}
+	    	
+	    	
+	    	function getRss(rssFeedUrl, divId, rssStyle, count) {
+		    	var url =  uri + "/rss/items?rssFeedUrl=" + rssFeedUrl 
+		    						+ "&rssItemCount=" + count + "&rssStyle=" + rssStyle;
+		    	setAjaxBlock(url, divId);
+	    	}
+
+	    	// Pass the actionUrl starting with / Example: /portal/getAcronyms
+	    	function getActionResult(actionUrl, divId) {
+	    		//alert("Inside the method")
+		    	var url =  uri + actionUrl;
+	    		//alert("Inside the method with url"+url+"--"+divId)
+		    	setAjaxBlock(url, divId);
+	    	}
+	    	function userEmailAjaxCall(Url, divId) {
+	    	   // alert("Inside the method with url"+Url+"--"+divId);
+		    	setAjaxBlockNoCache(Url, divId);		    	
+	    	}
+	    	function isUserLoggedinAjaxCall() {
+	    		 
+	    		  $.ajax({
+	    		    type: "GET",
+	    		    url: "/portal/openId/userSignIn",
+	    		    cache: false,
+	    		    headers: {
+	    		            'Cache-Control': 'no-cache',
+	    		            'Pragma': 'no-cache'
+	    		    },
+	    		    success: function(msg){      
+	    		        if(msg != null && msg.indexOf('YES') == -1) {      
+	    		                    window.location = '/portal/openId/authRequest?redirectUrl=' + window.location;      
+	    		        }
+	    		    } 
+	    		 
+	    		  });
+	    		}
+
+	    	
+	    	function getAcronymBySearch(actionUrl,divId){
+	    		//alert("Inside the acronym Method..");	
+	    		var acronymName = document.getElementById('acronymName').value;
+	    		//alert(acronymName)
+	    		if(acronymName==""){
+	    			acronymName="";
+	    		}
+	    		var url =  uri + actionUrl+"?acronymName="+acronymName;
+	    		//alert(url)
+	    		openMyModal(url);
+	    	}
+	    	
+	    	function setAjaxBlockNoCache(url, divId) {
+	    		document.getElementById(divId).innerHTML='<img src="/resources/images/loading.gif" border="0"/>';
+		    	$.ajax({
+		    		   type: "GET",
+		    		   url: url,
+		    		   cache: false,
+		    		    headers: {
+		    		        'Cache-Control': 'no-cache',
+		    		        'Pragma': 'no-cache'
+		    		    },
+		    		   success: function(msg){
+		    			   document.getElementById(divId).innerHTML= msg;
+		    			   	
+		    			   
+		    		   }
+		    		 });
+	    	}
+	    	function setDirectivesAjaxBlock(url, divId) {
+	    		//alert(1)
+	    		document.getElementById(divId).innerHTML='<img src="/resources/images/loading.gif" border="0"/>';
+		    	$.ajax({
+		    		   type: "GET",
+		    		   url: url,
+		    		   cache: false,
+		    		    headers: {
+		    		        'Cache-Control': 'no-cache',
+		    		        'Pragma': 'no-cache'
+		    		    },
+		    		   success: function(msg){
+		    			   document.getElementById(divId).innerHTML= msg;
+		    				$('.top-level-item:odd, .series-directive-item:odd, .dual-color-table tr:odd').css("background-color", "#F4F7FB");
+		    				$('.top-level-item:even, .series-directive-item:even, .dual-color-table tr:even').css("background-color", "#E8ECF7");	
+		    		   }
+		    		 });
+	    	}
+	    	function setAjaxBlock(url, divId) {
+	    		document.getElementById(divId).innerHTML='<img src="/resources/images/loading.gif" border="0"/>';
+		    	$.ajax({
+		    		   type: "GET",
+		    		   url: url,
+		    		   success: function(msg){
+		    			   document.getElementById(divId).innerHTML= msg;
+		    		   }
+		    		 });
+	    	}
+	    	
+			function searchAcronymByChar(actionUrl){
+				var url =  uri + actionUrl;
+				//alert(url)
+		    	//setAjaxDialogBlock(url, divId);
+	    		var url =  uri + actionUrl; 
+	    		openMyModal(url);
+	    	}
+			
+			
+	    	var openMyModal = function(source)
+	    	{
+	    		//alert("Inside the Modal Window..");
+	    		modalWindow.windowId = "myAcronymModal";
+	    		modalWindow.width = 580;
+	    		modalWindow.height = 405;
+	    		modalWindow.content = "<iframe width='590' height='405' frameborder='1'   scrolling='yes' allowtransparency='true' src='" + source + "'>&lt/iframe>";
+	    		modalWindow.open();
+	    	};
+	    	
+	    	
+	         
+	    	function openOffersDialog() {
+	        	$(document).ready(function() {        			
+        			$('#portal').css('display','none');        			
+        		});	    			    		
+	    		$('#overlay').fadeIn('fast', function() {
+	    			$('#boxpopup').css('display','block');
+	            	$('#boxpopup').animate({'left':'30%'},500);
+	        	});
+	    	} 
+	    	
+	     
+	      	function openLoginDialog() {	            			    	
+	    		$('#overlay').fadeIn('fast', function() {
+	    			$('#boxpopup').css('display','block');
+	            	$('#boxpopup').animate({'left':'30%'},500);
+	        	});
+	    	} 
+	        function closeOffersDialog(prospectElementID) {
+	        	$(function($) {
+	        		$(document).ready(function() {
+	        			$('#' + prospectElementID).css('position','absolute');
+	        			$('#' + prospectElementID).animate({'left':'-100%'}, 500, function() {
+	        				$('#' + prospectElementID).css('position','fixed');
+	        				$('#' + prospectElementID).css('left','100%');
+	        				$('#overlay').fadeOut('fast');
+	        			});
+	        		});
+	        	});
+	        } 
+	         
+	        var openRideModal = function(source)
+	    	{
+	    		//alert("Inside the Modal Window..");
+	    		modalViewWindow.windowId = "myModal";
+	    		modalViewWindow.width = 500;
+	    		modalViewWindow.height = 415;
+	    		modalViewWindow.borderColor="#336699";
+	    		modalViewWindow.content = "<iframe id='myframe' width='500' height='415' frameborder='4' style='border:5px solid #888888;'  scrolling='yes' allowtransparency='true' src='" + source + "'>&lt/iframe>";
+	    		modalViewWindow.open();
+	    	};
+
+	    	
+	    	
+	    	var openEditRideModal = function(source)
+	    	{
+	    		//alert("Inside the Modal Window..");
+	    		rideWindow.windowId = "myModal";
+	    		rideWindow.width = 815;
+	    		rideWindow.height = 595;
+	    		rideWindow.borderColor="#336699";
+	    		rideWindow.content = "<iframe width='815' height='595' frameborder='0'   scrolling='yes' allowtransparency='true' src='" + source + "'>&lt/iframe>";
+	    		rideWindow.open();
+	    	};
+	    	
+		
+		
+			var urlstr = window.location;	    	
+	    	function submitAuthForm(form){
+	    		form['redirectUrl'].value = urlstr;
+	    	
+	    		form.submit();	
+	  		  //return true;
+	    	}
+
+	    	
+	    	 $(document).ready(function() 
+	    			    { 
+	    			      $("#myTable").tablesorter(); 
+	    			      $("#offerRide").tablesorter(); 
+	    			      $("#slugRide").tablesorter();
+	    			      $("#lride").tablesorter();
+	    			    } 
+	    			); 
+	    	 $(document).ready(function() {
+	    			parent.$("#myframe").hide();
+	    		});
+
+  
+	    </script>   	
+	   <!--    	
+		<script language="javascript">
+			$(document).ready(
+				function (){
+					$("#pikame").PikaChoose();
+
+					$("#pikame").jcarousel({scroll:4,initCallback: function(carousel) 
+						{
+					        $(carousel.list).find('img').click(function() {
+					        	//console.log($(this).parents('.jcarousel-item').attr('jcarouselindex'));
+					            carousel.scroll(parseInt($(this).parents('.jcarousel-item').attr('jcarouselindex')));
+					        });
+					    }
+				    });
+
+				});
+		</script>
+ 		-->
+		<!-- NEW SSCRIPTS FOR GALLERIFFIC -->
+		 
+		<script type="text/javascript" src="/resources/js/jquery.history.js"></script>		
+		<script type="text/javascript" src="/resources/js/jquery.galleriffic.js"></script>
+		<script type="text/javascript" src="/resources/js/jquery.opacityrollover.js"></script>
+		
+		<!-- SOCIAL MEDIA CENTER -->
+		<link rel="stylesheet" href="/resources/css/social-media-center.css" type="text/css" />
+		<script type="text/javascript" src="/resources/js/isotope.v1.5.25.js"></script>
+		<script type="text/javascript" src="/resources/js/scrollTo.v.1.4.6.js"></script>
+		<script type="text/javascript" src="/resources/js/moment.min.js"></script>
+		<script type="text/javascript" src="/resources/js/jquery-feeds.v.0.5.js"></script>
+		<script type="text/javascript" src="/resources/js/social-media-center.js"></script>
+		
+		<!-- NEW STYLESHEETS FOR GALLERIFFIC -->
+ 		<link rel="stylesheet" href="/resources/css/galleriffic-gsa.css" type="text/css" />
+		<link rel="stylesheet" href="/resources/css/gsa-grey.css" type="text/css" />
+		
+		<!-- SEPARATED TYLESHEETS TO EVENTUALLY BREAK OUT BY THEME -->
+ 		<link rel="stylesheet" href="/resources/css/gsa-forms-library.css" type="text/css" />
+ 		<link rel="stylesheet" href="/resources/css/gsa-events.css" type="text/css" />
+ 		<!-- <link rel="stylesheet" href="/resources/css/gsa-popup-styles.css" type="text/css" />  -->
+ 		
+ 		<!-- FANCYBOX -->
+ 		<link rel="stylesheet" href="/resources/fancybox/jquery.fancybox.css" type="text/css" />
+ 		<script src="/resources/fancybox/jquery.fancybox.min.js" type="text/javascript"/></script>
+		
+		<!-- SMART MENUS -->
+		<link href="/resources/css/sm-core-css.css" rel="stylesheet" type="text/css" />
+ 		<script type="text/javascript" src="/resources/js/jquery.smartmenus.common.js"></script>
+		<script type="text/javascript">
+		$(function() {
+			$('#main-menu').smartmenus({
+				subMenusSubOffsetX: 1,
+				subMenusSubOffsetY: -8,
+				subIndicatorsText : ''
+			});
+			$('#main-menu').smartmenus('keyboardSetHotkey', '123', 'shiftKey');
+		});
+		</script>
+		
+		<!-- RSS Feed -->
+		<script src="/resources/js/rss_plugin.js" type="text/javascript"></script>
+ 		
+ 		<!-- RATE THIS PAGE -->
+ 		<link href="/resources/css/gsaFeedback.css" rel="stylesheet" type="text/css" />
+ 		<script type="text/javascript" src="/resources/js/gsaFeedback.js"></script>
+	
+
+
+  
+  
+  
+  	<title></title>  
+  
+	
+   	
+   		<meta name="PCODE" content="">
+ 		<meta name="NAMECODE" content="">
+ 		<meta name="PROVIDERCODE" content="">
+
+ 		<meta name="program" content="">
+ 		<meta name="title" content="">
+ 		<meta name="organization" content="">
+ 		
+ 
+ 		 		
+ 
+ 		
+ 	 
+
+
+	<!-- TYPE AHEAD CODE -->
+				
+		<script src="https://search.usa.gov/javascripts/jquery/jquery.bgiframe.min.js" type="text/javascript"></script>
+		<script src="https://search.usa.gov/javascripts/jquery/jquery.autocomplete.min.js" type="text/javascript"></script>
+		
+		<script type="text/javascript">
+		//<![CDATA[
+		var usagov_sayt_url = "https://search.usa.gov/sayt?aid=946&locale=en&m=false&";
+		//]]>
+		</script>
+		<script src="https://search.usa.gov/javascripts/sayt.js" type="text/javascript"></script>
+		<link href="https://search.usa.gov/stylesheets/compiled/sayt.css" type="text/css" rel="stylesheet">				
+		<!-- TYPE AHEAD CODE ENDS-->
+	
+		<script type="text/javascript" src="/resources/js/jquery.rotatingFeatureBlock.js"></script>
+ 		<script type="text/javascript" src="/resources/js/custom.js"></script>
+    
+
+
+ 
+
+		<link rel="stylesheet" href="/resources/css/gsa-theme-styles.css" type="text/css" />
+   		<script src="/resources/js/pulldown.js"></script>		
+		<SCRIPT type="text/javascript" SRC="/resources/js/jquery.min.js"></SCRIPT>				
+	    <SCRIPT LANGUAGE="JavaScript" SRC="/resources/js/c_config.js"> </SCRIPT>			
+		<SCRIPT LANGUAGE="JavaScript" SRC="/resources/js/c_smartmenus.js"> </SCRIPT>		
+		<SCRIPT LANGUAGE="JavaScript" SRC="/resources/js/jquery.js"> </SCRIPT>		
+		<SCRIPT type="text/javascript" SRC="/resources/js/jquery-bgiframe.js"></SCRIPT>		
+		<SCRIPT LANGUAGE="JavaScript" SRC="/resources/js/jquery.hoverIntent.minified.js"> </SCRIPT>
+		<SCRIPT type="text/javascript" SRC="/resources/js/dropdown.js"></SCRIPT>		
+   		<meta name="googlebot" content="noindex">
+   		<META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+   		<META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+   		<script type="text/javascript">
+	    	var uri = '/portal';
+	    </script>
+   		 
+   	</head>   	 
+<body>
+	
+	<div id="gray"></div>
+	<div id="wrapper">	 
+		<!--  	<script >
+     //  isUserLoggedinAjaxCall();
+	</script>   
+	
+	 
+       <div id="openIdUserEmail" style="float:right;clear:right;min-height:0px;margin-right:300px;margin-bottom:-5px;">  
+            </div>
+        <script >
+          var url = '/portal/openId/usersession';
+          userEmailAjaxCall(url, 'openIdUserEmail');
+         </script> 
+	-->
+		
+ 
+ 
+  <div id="header">   
+	
+		
+
+	
+		<a href="/HDR_0_home" style=" float: left;"><img border="0" alt="GSA InSite" src="/resources/images/GSA_InSite_logo.gif"></a>	  
+		<div class="clear"><img src="/resources/images/transparent.gif" height="1" alt="" /></div>	
+		<div id="GSAsearchHeader">		
+		<form id="search" name="searchForm" action="/portal/search.action;jsessionid=96FA3C26ADF12B4CBD6CFAFCBFE95C1A.sixtytwo" method="GET">	
+			<input type="hidden" name="search_host_url" value="http://crawlinsite.gsa.gov/"/>																			
+		    <input type="hidden" name="web_host_url" value="https://insite.gsa.gov/"/>			     
+			<input type="hidden" name="btnG" value="Google Search"/>
+		     <input type="hidden" name="access" value="p"/>
+		     <input type="hidden" name="client" value="INSITE_FRONT_END"/>
+		     <input type="hidden" name="output" value="xml_no_dtd"/>
+		     <input type="hidden" name="proxystylesheet" value="INSITE_FRONT_END"/>
+		     <input type="hidden" name="entqr" value="3"/>
+		     <input type="hidden" name="oe" value="UTF-8"/>
+		     <input type="hidden" name="ud" value="1"/>
+		     <input type="hidden" name="site" value="INSITE_PROD_GSA_INSITE_COLLECTION"/>
+		     <input type="hidden" name="getfields" value="description"/>
+		     <input type="hidden" name="filter" value="0"/>
+		     <input type="hidden" name="num" value="30"/>
+			<!-- Type Ahead feature start -->
+		     <input id="m" name="m" type="hidden" />
+		     <input type="hidden" name="affiliate" value="gsa.gov">
+		     <!-- Type Ahead feature end -->
+						
+				<label for="searchBox" style="display:none">Search</label>
+			    <input autocomplete="off" class="usagov-search-autocomplete" id="searchBox" accessKey="" tabindex="0" type="text" name="q" alt="Enter search term" style="margin-bottom:7px;height:25px;text-align:bottom;" value=""/>
+			    <input id="searchButton" accessKey="" tabindex="0" type="image" src="/resources/images/button_search.gif" alt="Click to Search"/>													
+				<p style="padding: 0; margin: 0 33px 0 0;">
+	 				
+					
+					     <input type="radio" name="region_pick" checked
+					     	onclick="this.form.search_host_url.value='http://crawlinsite.gsa.gov/portal/region_504550/';this.form.web_host_url.value='https://insite.gsa.gov/portal/';this.form.site.value='INSITE_PROD_GSA_INSITE_COLLECTION';" 
+					     	value="GSA_InSite" id="gsaInsite"><label for="gsaInsite"">GSA InSite</label>
+					     <input type="radio" name="region_pick" 
+					     	onclick="this.form.search_host_url.value='http://crawlinsite.gsa.gov/';this.form.web_host_url.value='https://insite.gsa.gov/portal/';this.form.site.value='INSITE_PROD_COLLECTION';" 
+					     	value="All_InSites" id="allInsites"><label for="allInsites">All InSites</label>
+			     				     				     			     
+			     </p>				    
+		
+			
+		</form>
+
+
+
+
+		</div>		
+		
+		<!-- top navigation -->		
+		
+	<!--    -->   
+<div class="menu">
+    <ul class="dropdown">
+            
+			
+					<li><a href="/portal/category/100000">GSA InSite</a>
+			
+					</li>
+
+            
+            
+			
+					<li><a href="/portal/category/529582">Agency Topics</a>
+			
+
+
+                <ul class="sub_menu">
+                    <li><a href="/portal/category/529582">About GSA</a></li>
+
+                    <li><a href="/portal/category/529853">HR, Pay, & Leave</a></li>
+
+                    <li><a href="/portal/category/529987">Information Technology</a></li>
+
+                    <li><a href="/portal/category/530128">News</a></li>
+
+                    <li><a href="/portal/category/530152">Procurement & Payments</a></li>
+
+                    <li><a href="/portal/category/530193">Reference & Resources</a></li>
+
+                    <li><a href="/portal/category/530288">Safety & Security</a></li>
+
+                    <li><a href="/portal/category/530311">Training</a></li>
+
+                    <li><a href="/portal/category/530336">Travel</a></li>
+                </ul>
+            </li>
+
+           <!--   
+			
+					<li><a href="/portal/category/530460">Collaboration</a>
+			             
+
+                <ul class="sub_menu">
+
+                        <li class="sectionhead">TOOLS AND RESOURCES</li>
+
+
+                    <li><a href="/portal/category/530460">Collaboration Central</a></li>
+
+                    <li><a href="https://sites.google.com/a/gsa.gov/google-user-experience-site/learn-about-google/chat">Google Chat</a></li>
+
+                    <li><a href="https://sites.google.com/a/gsa.gov/google-user-experience-site/learn-about-google/docs">Google Docs</a></li>
+
+                    <li><a href="http://insite.gsablogs.gsa.gov/itmodernization/tag/google-groups/">Google Groups</a></li>
+
+                    <li><a href="https://sites.google.com/a/gsa.gov/google-user-experience-site/learn-about-google/sites">Google Sites</a></li>
+
+      
+
+                    <li><a href="http://insite.gsablogs.gsa.gov/">Internal Blogs</a></li>
+
+                    <li><a href="http://insite.gsablogs.gsa.gov/socialmediacenter/">Social Media</a></li>
+
+
+                       <li class="sectionhead">VIRTUAL MEETINGS</li>
+
+
+                    <li><a href="https://gsa.webex.com/">WebEx (online)</a></li>
+
+                    <li><a href="/portal/category/530475">Telepresence</a></li>
+
+                    <li><a href="/portal/category/530066">Video Conferencing</a></li>
+                </ul>
+            </li>
+            
+            
+	 -->
+<!-- ORGANIZATION -->
+	<li class="organization"><a href="#">Organization</a>
+		<ul class="sub_menu">
+			<li><a href="/portal/content/501236">Office of the Administrator</a></li>
+			<li class="empty"></li>
+			<li><a href="/portal/category/529683"><span>FAS</span> - Federal Acquisition Service</a></li>
+			<li><a href="/portal/category/529782"><span>PBS</span> - Public Buildings Service</a></li>
+            <li class="empty"></li>
+			<li><a href="/portal/category/529734"><span>OGP</span> - Office of Government-wide Policy</a></li>
+			<li><a href="/portal/category/529615"><span>CFO</span> - Office of the Chief Financial Officer</a></li>
+			<li><a href="/portal/category/529638"><span>OHRM</span> - Office of Human Resources Management</a></li>
+			<li><a href="/portal/category/529635"><span>CIO</span> - Office of the Chief Information Officer</a></li>	
+			<li><a href="/portal/category/529668"><span>CIA</span> - Congressional &amp; Intergovernmental Affairs</a></li>
+			<li><a href="/portal/category/529644"><span>OCSIT</span> - Office of Citizen Services and Innovative Technologies</a></li>
+			<li><a href="/portal/category/529665"><span>OCM</span> - Office of Communications and Marketing</a></li>
+			<li><a href="/portal/category/529818"><span>OSBU</span> - Office of Small Business Utilization</a></li>
+			<li><a href="/portal/category/529690"><span>OGC</span> - Office of General Counsel</a></li>
+			<li><a href="/portal/category/529653"><span>OCR</span> - Office of Civil Rights</a></li>
+			<li><a href="/portal/category/529672"><span>OMA</span> - Office of Mission Assurance</a></li>
+			<li><a href="/portal/category/529762"><span>OIG</span> - Office of Inspector General</a></li>
+			<li><a href="/portal/category/529662"><span>CBCA</span> - Civilian Board of Contract Appeals</a></li>
+			<li><a href="/portal/category/512926"><span>OAS</span> - Office of Administrative Services</a></li>
+			<li class="empty"></li>
+			<li><a href="/portal/category/529792">GSA Regions</a></li>
+			<!--<li><a href="/portal/category/510078">Central Office</a></li>-->
+			<li class="empty"></li>
+			<li><a href="http://www.gsaig.gov/" target="_blank">Office of the Inspector General (website)</a></li>
+        </ul>
+    </li>
+<!-- DIRECTORY -->
+	 
+			<li id="current"><a href="/portal/staffDirectory/searchInsiteStaffDirectory">Directory</a></li>
+	
+	
+<!-- PBS -->
+	
+	
+		<li><a href="/portal/category/516130">PBS</a></li>
+	
+<!-- FAS -->
+	
+	
+		<li id="fas-tab"><a href="/portal/category/510074">FAS</a></li>
+	
+	
+	 
+	
+	<!--
+		<li id="fas-tab"><a href="/portal/directive/app/soid/33/tabId/subjects/category/530207/hostUri/portal">Directives</a></li>
+		-->
+		<li id="fas-tab"><a href="/portal/directives">Directives</a></li>
+		
+	
+<!-- REGIONS -->
+	
+	<!-- MIGHT NOT BE CORRECT JSP -->
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<!--
+		<li id="region-static"><a href="/portal/category/504555">Regions</a>
+	-->
+	<li id="region-static"><a href="/portal/category/504555">Locations</a>
+                <ul class="sub_menu">
+                   <li><a href="/portal/category/510529">New England (1)</a></li>                    
+                   <li><a href="/portal/category/510058">Northeast & Caribbean (2)</a></li>
+                   <li><a href="/portal/category/510062">Mid-Atlantic (3)</a></li>
+                   <li><a href="/portal/category/510054">Southeast Sunbelt (4)</a></li>
+      			   <li><a href="/portal/category/510005">Great Lakes (5)</a></li> 
+				   <!--  <li><a href="http://insite.greatlakes.gsa.gov:8888/" target="_blank">Great Lakes (5)</a></li>  -->
+                   <!--  <li><a href="https://sharepoint.pbs.gsa.gov/pbs/R6InSite/default.aspx" target="_blank">Heartland (6)</a></li>  -->
+                   <li><a href="/portal/category/510341">Heartland (6)</a></li>  
+                   <li><a href="/portal/category/510066">Greater Southwest (7)</a></li>
+                   <!--  <li><a href="http://r8insite.gsa.gov/" target="_blank">Rocky Mountain (8)</a></li>  -->
+                   <li><a href="/portal/category/512293">Rocky Mountain (8)</a></li>
+                   <li><a href="/portal/category/510817">Pacific Rim (9)</a></li>
+                   <li><a href="/portal/category/510070">Northwest/Arctic (10)</a></li>
+                   <li><a href="/portal/category/523078">National Capital Region</a></li>
+                   <li class="empty"></li>
+				   <li><a href="/portal/category/510078">Central Office/1800F</a></li>
+				   <!--
+                    <li><a href="/portal/category/510074">Federal Acquisition Service</a></li>
+					<li><a href="/portal/category/516130">Public Buildings Service</a></li>
+					 -->
+					<!-- Commented on 10/16/2012 as per susie's request
+                    <li>
+                   	 <a href="http://insite.pbs.gsa.gov/" target="_blank">Public Buildings Service</a>
+                    </li>
+ 					-->
+                </ul>
+            </li>
+		</ul>
+			<script type="text/javascript" src="/resources/js/helper.js"></script>
+	<!-- END -->
+            
+            
+		</ul>
+
+        <div style="clear:both;"></div>
+    </div>
+    
+	
+	 <!-- top nav end -->
+</div>			
+<!-- header  -->
+<script type="text/javascript">
+	document.searchForm.search_host_url.value='http://crawlinsite.gsa.gov/portal/region_504550/';
+	document.searchForm.web_host_url.value='https://insite.gsa.gov/portal/'; 
+	document.searchForm.site.value='INSITE_PROD_GSA_INSITE_COLLECTION';
+</script>
+
+
+		
+
+<div id="portal">
+	<table  style="width:100%;border:0">
+		<tr valign="top" >
+			<td >			
+				
+				<div id="pageLayout">						
+					<h2 id="headline">   
+		        		We apologize for the inconvenience...
+					</h2> 				
+					<p>InSite has recently moved to a new system and the address (URL) for every page has changed. </p>
+					<p>As a result, any bookmark you may have created will no longer work and needs to be updated. </p>
+					<p>To find what you're looking for, please try the following:</p>
+					<ul>
+					<li>Use the site's improved <em><strong>Search </strong></em>(above right)<br />
+					  <br />
+					</li>
+					<li>Click on a tab above to visit different topics or InSites<br />
+					  <br />
+					  </li>
+					<li>Go  to  the homepage of the InSite you  intend to visit and follow links and navigation:<br />
+					  <br />
+					</li>
+					<ul>
+					<li><a href="/r1">Region 1 InSite</a></li>
+					<li><a href="/r2">Region 2 InSite</a></li>
+					  <li><a href="/r3">Region 3 InSite</a></li>
+					  <li><a href="/r4">Region 4 InSite</a></li>
+					  <li><a href="/r5">Region 5 InSite</a></li>
+					  <li><a href="/r6">Region 6 InSite</a></li>
+					  <li><a href="/r7">Region 7 InSite</a></li>
+					  <li><a href="/r8">Region 8 InSite</a></li>
+					  <li><a href="/r9">Region 9 InSite</a></li>
+					  <li><a href="/r10">Region 10 InSite</a></li>
+					  <li><a href="/fas">Federal Acquisition Service</a></li>
+					  <li><a href="/co">Central Office InSite</a></li>
+					  <li><a href="/ncr">National Capital Region Insite</a></li>
+					  <li><a href="/pbs">PBS Insite</a></li>
+					  <li><a href="http://insite.gsa.gov/">GSA InSite</a><br />
+					    <br />
+					</li>
+					</ul>
+					<li>Use the  <a href="/portal/staffDirectory/searchInsiteStaffDirectory" title="Staff Directory">Staff Directory</a> to access directory information<br />
+					  <br />
+					</li>
+					</ul>
+					<p><strong>Still having problems? </strong>Please send a message to <a href="mailto:InSite@gsa.gov">InSite@gsa.gov</a><br />
+				    A URL is helpful when reporting site errors. We'll be happy to research the matter. </p>
+					<p>Thank you for visiting InSite!</p>
+			  </div>
+			</td>
+		</tr>
+	</table>
+</div>
+		 
+
+<br/>
+	<div id="footer">
+	 		<ul id="footer_navigation">
+	 		    <li><a href="/portal/content/569194" title="Accessibility Statement"> Accessibility Statement </a></li>
+	 		 	<li><a href="/portal/content/513618" title="Privacy and Security"> Privacy and Security </a></li>
+				<li><a href="http://www.gsa.gov/" target="_blank" title="www.gsa.gov"> GSA.gov </a></li>
+				<li><a href="http://www.usa.gov/Federal_Employees/Federal_Employees_Gateway.shtml" target="_blank" title="USA.gov"> USA.gov </a></li> 
+				<li><a href="http://www.gsa.gov/gsajobs" target="_blank" title="Careers at GSA"> Careers at GSA </a></li> 
+				<li><a href="http://feddesk.gsa.gov/" target="_blank" title="FEDdesk"> FEDdesk </a></li>
+				<li><a href="http://pegasys.gsa.gov/" target="_blank" title="Pegasys"> Pegasys </a></li>
+				<li><a href="mailto:insite@gsa.gov" title="Contact InSite"> Contact InSite </a></li>
+				<li class="last"><a href="/portal/site/map/" title="Sitemap">Sitemap</a></li>  
+				
+	</div>	
+	
+	
+	
+			
+			<script type="text/javascript" src="https://dnn506yrbagrg.cloudfront.net/pages/scripts/0011/0536.js"> </script>
+	
+	
+		<!-- Theme specific script files -->
+		
+		<!-- End: Theme specific script files -->
+
+		<!-- Layout specific script files -->
+		
+		<!-- End: Layout specific script files -->
+<!--  @buildlabel@ -->	
+<!-- app : ~kcgsa2app~~8062 -->		 
+	</div>
+</body>
+</html>
